@@ -21,20 +21,26 @@ class CrashReporter
 
 	public function report($exception)
 	{
-		$data = [
-			'exception'      => get_class($exception),
-			'message'        => $exception->getMessage(),
-			'fileName'       => $exception->getFile(),
-			'lineNumber'     => $exception->getLine(),
-			'callStack'      => $exception->getTrace(),
-			'requestHeaders' => $this->dataSource->getRequestHeaders(),
-			'requestData'    => $this->dataSource->getRequestData(),
-			'queryLog'       => $this->dataSource->getQueryLog()
-		];
+		try {
+			$data = [
+				'exception'      => get_class($exception),
+				'message'        => $exception->getMessage(),
+				'fileName'       => $exception->getFile(),
+				'lineNumber'     => $exception->getLine(),
+				'callStack'      => $exception->getTrace(),
+				'requestHeaders' => $this->dataSource->getRequestHeaders(),
+				'requestData'    => $this->dataSource->getRequestData(),
+				'queryLog'       => $this->dataSource->getQueryLog()
+			];
 
-		$client = $this->getClient();
+			$client = $this->getClient();
 
-		$client->request('POST', '/api/crashes', [ 'json' => [ 'apiKey' => $this->apiKey, 'data' => $data ] ]);
+			$client->request('POST', '/api/crashes', [ 'json' => [ 'apiKey' => $this->apiKey, 'data' => $data ] ]);
+		} catch (\Exception $e) {
+			$message = $e->getMessage();
+
+			error_log("Harmony - failed to report an exception ({$message})");
+		}
 	}
 
 	public function setDataSource(DataSourceInterface $dataSource)
