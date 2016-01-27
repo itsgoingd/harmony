@@ -1,0 +1,21 @@
+{
+	"name": "itsgoingd/harmony",
+	"description": "PHP client for Harmony, an exception logging and analysis service.",
+	"keywords": ["exceptions", "error", "logging", "laravel"],
+	"homepage": "http://github.com/itsgoingd/harmony",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "itsgoingd",
+			"email": "itsgoingd@luzer.sk",
+			"homepage": "http://twitter.com/itsgoingd"
+		}
+	],
+	"require": {
+		"php": ">=5.3.9",
+		"guzzlehttp/guzzle": "~6.0"
+	},
+	"autoload": {
+		"psr-4": {"Clockwork": "Clockwork"}
+	}
+}
