@@ -11,6 +11,10 @@ class CrashReporter
 
 	protected $server;
 
+	protected $dataSource;
+
+	protected $errorCallback;
+
 	public function __construct($apiKey, $server)
 	{
 		$this->apiKey = $apiKey;
@@ -39,13 +43,22 @@ class CrashReporter
 		} catch (\Exception $e) {
 			$message = $e->getMessage();
 
-			error_log("Harmony - failed to report an exception ({$message})");
+			if ($this->errorCallback) {
+				$this->errorCallback($e);
+			} else {
+				error_log("Harmony - failed to report an exception ({$message})");
+			}
 		}
 	}
 
 	public function setDataSource(DataSourceInterface $dataSource)
 	{
 		$this->dataSource = $dataSource;
+	}
+
+	public function setErrorCallback(callable $errorCallback)
+	{
+		$this->errorCallback = $errorCallback;
 	}
 
 	protected function getClient()
