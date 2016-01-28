@@ -44,7 +44,7 @@ class CrashReporter
 			$message = $e->getMessage();
 
 			if ($this->errorCallback) {
-				$this->errorCallback($e);
+				call_user_func_array($this->errorCallback, [ $e ]);
 			} else {
 				error_log("Harmony - failed to report an exception ({$message})");
 			}
