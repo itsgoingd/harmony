@@ -31,6 +31,8 @@ class ServiceProvider extends BaseServiceProvider
 			return $crashReporter;
 		});
 
+		$this->app('harmony.laravel')->collectQueries();
+
 		$this->app->alias('harmony.laravel', 'Harmony\Client\DataSources\LaravelDataSource');
 		$this->app->alias('harmony', 'Harmony\Client\CrashReporter');
 	}

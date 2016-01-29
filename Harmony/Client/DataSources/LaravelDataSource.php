@@ -11,8 +11,6 @@ class LaravelDataSource implements DataSourceInterface
 	public function __construct(Application $app)
 	{
 		$this->app = $app;
-
-		$this->collectQueries();
 	}
 
 	public function getRequestData()
