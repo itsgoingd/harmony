@@ -12,8 +12,9 @@
 		}
 	],
 	"require": {
-		"php": ">=5.3.9",
-		"guzzlehttp/guzzle": "~6.0"
+		"php": ">=5.4",
+		"guzzlehttp/guzzle": "~6.0",
+		"symfony/debug": "~2.8|~3.0"
 	},
 	"autoload": {
 		"psr-4": {"Harmony\\": "Harmony"}
