@@ -48,10 +48,11 @@ class LaravelDataSource implements DataSourceInterface
 	public function registerQuery($event)
 	{
 		$this->queries[] = array(
-			'query'      => $event->sql,
-			'bindings'   => $event->bindings,
-			'time'       => $event->time,
-			'connection' => $event->connectionName
+			'query'         => $event->sql,
+			'runnableQuery' => $this->createRunnableQuery($event->sql, $event->bindings, $event->connectionName),
+			'bindings'      => $event->bindings,
+			'time'          => $event->time,
+			'connection'    => $event->connectionName
 		);
 	}
 
@@ -66,5 +67,20 @@ class LaravelDataSource implements DataSourceInterface
 			'time'           => $time,
 			'connectionName' => $connection
 		));
+	}
+
+	/**
+	 * Takes a query, an array of bindings and the connection as arguments, returns runnable query
+	 */
+	protected function createRunnableQuery($query, $bindings, $connection)
+	{
+		$bindings = $this->app['db']->connection($connection)->prepareBindings($bindings);
+
+		foreach ($bindings as $binding) {
+			$binding = $this->app['db']->connection($connection)->getPdo()->quote($binding);
+			$query = preg_replace('/\?/', $binding, $query, 1);
+		}
+
+		return $query;
 	}
 }
