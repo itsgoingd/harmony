@@ -15,6 +15,10 @@ class FlattenException extends BaseFlattenException
 		$trace[1]['file'] = $this->getFile();
 		$trace[1]['line'] = $this->getLine();
 
+		if ($previewLines === false) {
+			return $trace;
+		}
+
 		foreach ($trace as &$item) {
 			if (! $item['file'] || ! $item['line']) {
 				continue;

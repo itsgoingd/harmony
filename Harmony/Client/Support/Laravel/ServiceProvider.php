@@ -9,6 +9,8 @@ class ServiceProvider extends BaseServiceProvider
 {
 	public function register()
 	{
+		$this->publishes([ __DIR__ . '/config/harmony.php' => config_path('harmony.php') ]);
+
 		$this->app->singleton('harmony.laravel', function($app)
 		{
 			return new LaravelDataSource($app);
@@ -16,9 +18,12 @@ class ServiceProvider extends BaseServiceProvider
 
 		$this->app->singleton('harmony', function($app)
 		{
+			$config = $app['config'];
+
 			$crashReporter = new CrashReporter(
-				$app['config']->get('services.harmony.apiKey'),
-				$app['config']->get('services.harmony.server')
+				$config->get('services.harmony.apiKey', $app['config']->get('harmony.apiKey')),
+				$config->get('services.harmony.server', $app['config']->get('harmony.server')),
+				$config->get('harmony.previewLines')
 			);
 
 			$crashReporter->setDataSource($app['harmony.laravel']);

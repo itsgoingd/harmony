@@ -11,14 +11,18 @@ class CrashReporter
 
 	protected $server;
 
+	protected $previewLines;
+
 	protected $dataSource;
 
 	protected $errorCallback;
 
-	public function __construct($apiKey, $server)
+	public function __construct($apiKey, $server, $previewLines = false)
 	{
 		$this->apiKey = $apiKey;
 		$this->server = $server;
+
+		$this->previewLines = $previewLines;
 
 		$this->dataSource = new PhpDataSource();
 	}
@@ -33,7 +37,7 @@ class CrashReporter
 				'message'        => $exception->getMessage(),
 				'fileName'       => $exception->getFile(),
 				'lineNumber'     => $exception->getLine(),
-				'callStack'      => $exception->getTrace(),
+				'callStack'      => $exception->getTrace($this->previewLines),
 				'requestHeaders' => $this->dataSource->getRequestHeaders(),
 				'requestData'    => $this->dataSource->getRequestData(),
 				'queryLog'       => $this->dataSource->getQueryLog()

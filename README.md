@@ -53,6 +53,12 @@ public function report(Exception $e)
 }
 ```
 
+While you can set your API key in the services configuration file, there is also a full Harmony configuration file available including various advanced settings. Use the following Artisan command to publish the configuration file into your config directory:
+
+```
+php artisan vendor:publish --provider='Harmony\Client\Support\Laravel\ServiceProvider'
+```
+
 ## Licence
 
 Copyright (c) 2016 Miroslav Rigler
