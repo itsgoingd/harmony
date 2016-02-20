@@ -25,7 +25,7 @@ class ServiceProvider extends BaseServiceProvider
 
 			$crashReporter->setErrorCallback(function($e) use($app)
 			{
-				$app['log']->error('Hermony - failed to report crash (' . $e->getMessage() . ')');
+				$app['log']->error('Harmony - failed to report crash (' . $e->getMessage() . ')');
 			});
 
 			return $crashReporter;
