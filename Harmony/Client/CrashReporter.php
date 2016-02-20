@@ -4,7 +4,6 @@ use Harmony\Client\DataSources\DataSourceInterface;
 use Harmony\Client\DataSources\PhpDataSource;
 
 use GuzzleHttp\Client;
-use Symfony\Component\Debug\Exception\FlattenException;
 
 class CrashReporter
 {
