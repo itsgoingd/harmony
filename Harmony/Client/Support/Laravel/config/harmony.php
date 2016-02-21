@@ -17,6 +17,26 @@ return [
 	'previewLines' => 3,
 
 	/**
+	 * Whether the application should be considered in debug mode. While this is enabled, some basic exception
+	 * information including link to more details will be displayed on crash.
+	 * Set to null to use app.debug value.
+	 */
+
+	'debug' => null,
+
+	/**
+	 * Title of the crash screen in non-debug mode.
+	 */
+
+	'crashTitle' => null,
+
+	/**
+	 * Message on the crash screen in non-debug mode.
+	 */
+
+	'crashMessage' => null,
+
+	/**
 	 * Hostname of your own Harmony server.
 	 */
 

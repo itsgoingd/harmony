@@ -15,7 +15,11 @@ class CrashReporter
 
 	protected $dataSource;
 
+	protected $renderer;
+
 	protected $errorCallback;
+
+	protected $lastReported;
 
 	public function __construct($apiKey, $server, $previewLines = false)
 	{
@@ -25,6 +29,7 @@ class CrashReporter
 		$this->previewLines = $previewLines;
 
 		$this->dataSource = new PhpDataSource();
+		$this->renderer   = new ExceptionRenderer();
 	}
 
 	public function report($exception)
@@ -45,7 +50,10 @@ class CrashReporter
 
 			$client = $this->getClient();
 
-			$client->request('POST', '/api/crashes', [ 'json' => [ 'apiKey' => $this->apiKey, 'data' => $data ] ]);
+			$response = $client->request('POST', '/api/crashes', [ 'json' => [ 'apiKey' => $this->apiKey, 'data' => $data ] ]);
+
+			$this->lastReported = $data;
+			$this->lastReported['response'] = json_decode($response->getBody(), true);
 		} catch (\Exception $e) {
 			$message = $e->getMessage();
 
@@ -57,6 +65,11 @@ class CrashReporter
 		}
 	}
 
+	public function renderLastReported()
+	{
+		return $this->renderer->render($this->lastReported);
+	}
+
 	public function setDataSource(DataSourceInterface $dataSource)
 	{
 		$this->dataSource = $dataSource;
@@ -65,6 +78,11 @@ class CrashReporter
 	public function setErrorCallback(callable $errorCallback)
 	{
 		$this->errorCallback = $errorCallback;
+	}
+
+	public function setRenderer(ExceptionRenderer $renderer)
+	{
+		$this->renderer = $renderer;
 	}
 
 	protected function getClient()
