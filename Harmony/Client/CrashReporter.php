@@ -87,6 +87,12 @@ class CrashReporter
 
 	protected function getClient()
 	{
-		return new Client([ 'base_uri' => "http://{$this->server}" ]);
+		$server = $this->server;
+
+		if (strpos($server, 'http://') !== 0 && strpos($server, 'https://') !== 0) {
+			$server = "https://{$server}";
+		}
+
+		return new Client([ 'base_uri' => $server ]);
 	}
 }
